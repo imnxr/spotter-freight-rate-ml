@@ -79,18 +79,18 @@ The main development results are below. These numbers are from the September and
 
 | Model | September MAE | October MAE | Mean MAE |
 | --- | ---: | ---: | ---: |
-| Unscaled Ridge, alpha=1 | $190.84 | $174.16 | $182.50 |
-| Standardized Ridge, full feature set | $142.46 | $144.15 | $143.31 |
-| Core Ridge, alpha=1 | $142.21 | $143.67 | $142.94 |
-| Core Ridge, alpha=10 | $142.00 | $143.45 | $142.73 |
-| Core Ridge, alpha=30 | $141.55 | $143.04 | $142.29 |
-| **Core Ridge, alpha=100** | **$140.52** | **$142.06** | **$141.29** |
-| HistGradientBoosting | $149.60 | $137.81 | $143.70 |
-| Log-target HGB | $160.24 | $139.14 | $149.69 |
-| Log-target Ridge, alpha=100 | $427.30 | $422.85 | $425.08 |
-| Expanding historical pricing | $159.65 | $152.78 | $156.22 |
-| Rate-per-mile Ridge, alpha=100 | $155.75 | $157.91 | $156.83 |
-| Rate-per-mile Ridge, alpha=300 | $153.81 | $156.05 | $154.93 |
+| Unscaled Ridge, alpha=1 | USD 190.84 | USD 174.16 | USD 182.50 |
+| Standardized Ridge, full feature set | USD 142.46 | USD 144.15 | USD 143.31 |
+| Core Ridge, alpha=1 | USD 142.21 | USD 143.67 | USD 142.94 |
+| Core Ridge, alpha=10 | USD 142.00 | USD 143.45 | USD 142.73 |
+| Core Ridge, alpha=30 | USD 141.55 | USD 143.04 | USD 142.29 |
+| **Core Ridge, alpha=100** | **USD 140.52** | **USD 142.06** | **USD 141.29** |
+| HistGradientBoosting | USD 149.60 | USD 137.81 | USD 143.70 |
+| Log-target HGB | USD 160.24 | USD 139.14 | USD 149.69 |
+| Log-target Ridge, alpha=100 | USD 427.30 | USD 422.85 | USD 425.08 |
+| Expanding historical pricing | USD 159.65 | USD 152.78 | USD 156.22 |
+| Rate-per-mile Ridge, alpha=100 | USD 155.75 | USD 157.91 | USD 156.83 |
+| Rate-per-mile Ridge, alpha=300 | USD 153.81 | USD 156.05 | USD 154.93 |
 
 The selected model is Ridge regression with `alpha=100`.
 
@@ -110,15 +110,15 @@ The selected model is Ridge regression with `alpha=100`.
 
 | Holdout | MAE | RMSE |
 | --- | ---: | ---: |
-| September 2025 | $140.52 | $622.71 |
-| October 2025 | $142.06 | $653.47 |
-| Mean across folds | **$141.29** | **$638.09** |
+| September 2025 | USD 140.52 | USD 622.71 |
+| October 2025 | USD 142.06 | USD 653.47 |
+| Mean across folds | **USD 141.29** | **USD 638.09** |
 
-The cross-fold mean MAE of $141.29 is the main model-development result in this repository. It is not the final hidden validation score.
+The cross-fold mean MAE of USD 141.29 is the main model-development result in this repository. It is not the final hidden validation score.
 
 ## Why Ridge won
 
-The biggest improvement came from scaling the numeric features. The initial unscaled Ridge model had a mean MAE of $182.50. The standardized version reduced that to $143.31.
+The biggest improvement came from scaling the numeric features. The initial unscaled Ridge model had a mean MAE of USD 182.50. The standardized version reduced that to USD 143.31.
 
 After that, I compared the core variables with larger feature sets. In the tested Ridge setup, adding calendar and spatial features increased the October holdout MAE instead of improving it.
 
@@ -137,11 +137,11 @@ For that reason I kept the simpler Ridge model rather than adding complexity wit
 
 The remaining weakness is the high end of the rate distribution. On the October holdout:
 
-- Median absolute error: $60.77
-- 90th percentile absolute error: $201.91
-- 95th percentile absolute error: $282.61
-- 99th percentile absolute error: $1,813.70
-- Maximum absolute error: $13,884.22
+- Median absolute error: USD 60.77
+- 90th percentile absolute error: USD 201.91
+- 95th percentile absolute error: USD 282.61
+- 99th percentile absolute error: USD 1,813.70
+- Maximum absolute error: USD 13,884.22
 
 The largest errors were generally underpredictions on unusually expensive long-haul loads. Their supplied load attributes look similar to ordinary loads, so the model has limited information with which to recognize those spikes.
 
@@ -173,16 +173,16 @@ Prediction distribution:
 
 | Statistic | Value |
 | --- | ---: |
-| Minimum | $31.57 |
-| 25th percentile | $1,300.04 |
-| Median | $2,043.71 |
-| Mean | $2,382.77 |
-| 75th percentile | $3,365.08 |
-| Maximum | $6,516.82 |
+| Minimum | USD 31.57 |
+| 25th percentile | USD 1,300.04 |
+| Median | USD 2,043.71 |
+| Mean | USD 2,382.77 |
+| 75th percentile | USD 3,365.08 |
+| Maximum | USD 6,516.82 |
 
 ### `december_predictions.csv`
 
-The December file contains all 31 required dates and the required seven columns. The model gives the fixed scenario a prediction of **$793.40** for every day.
+The December file contains all 31 required dates and the required seven columns. The model gives the fixed scenario a prediction of **USD 793.40** for every day.
 
 ### `scorer_results/candidate_december.png`
 
@@ -194,7 +194,7 @@ The supplied scorer accepted both prediction files and confirmed the required ro
 
 The December input repeats the same operational values for Lexington to Fort Wayne, 360 miles, Dry Van, 32,000 lb. The selected model does not use the date field, so the predicted rate is constant across the month.
 
-As a sanity check only, the training data contains 21 historical loads on this exact lane with Dry Van equipment. Their posted rates range from $757.93 to $934.37, with a median of $807.89. The model's $793.40 prediction is inside that observed range.
+As a sanity check only, the training data contains 21 historical loads on this exact lane with Dry Van equipment. Their posted rates range from USD 757.93 to USD 934.37, with a median of USD 807.89. The model's USD 793.40 prediction is inside that observed range.
 
 This is a plausibility check, not evidence about the hidden December labels.
 
@@ -273,6 +273,6 @@ The December forecast is flat because the selected model does not use date. Addi
 
 ## Conclusion
 
-The final submission uses a standardized Ridge model with `alpha=100` and five operational fields. It achieved a cross-fold mean MAE of **$141.29** on the September and October temporal holdouts.
+The final submission uses a standardized Ridge model with `alpha=100` and five operational fields. It achieved a cross-fold mean MAE of **USD 141.29** on the September and October temporal holdouts.
 
 I kept the model deliberately small because the tested alternatives did not produce a better and more consistent result. The final prediction files passed the supplied scorer checks, and the repository includes the notebooks and tests used to reach the final model.
